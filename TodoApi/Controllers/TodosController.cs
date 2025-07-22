@@ -34,7 +34,7 @@ public class TodosController : ControllerBase
 
     // PUT api/Todos/5
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] string value)
+    public IActionResult Put(int id, [FromBody] string Client_Task)
     {
         throw new NotImplementedException();
 
