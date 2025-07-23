@@ -1,4 +1,4 @@
-﻿namespace TodoLibrary.DataAccess.Models;
+﻿namespace TodoLibrary.Models;
 
 public class TodoModel
 {

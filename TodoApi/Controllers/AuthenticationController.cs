@@ -67,7 +67,7 @@ public class AuthenticationController : ControllerBase
             _config.GetValue<string>("Authentication:Audience"),
             claims,
             DateTime.UtcNow,
-            DateTime.UtcNow.AddMinutes(1),
+            DateTime.UtcNow.AddMinutes(30),
             signingCredentials
             );
 
