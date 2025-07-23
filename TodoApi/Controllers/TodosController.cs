@@ -33,7 +33,7 @@ public class TodosController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<TodoModel>>> Get()
     {
-        logger.LogInformation("Get: api/Togos");
+        logger.LogInformation("Get: api/Todos/ from  {TodoId}", GetUserId());
 
         //var sdf = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
