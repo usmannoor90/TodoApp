@@ -7,8 +7,9 @@ using System.Text;
 
 namespace TodoApi.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
+[ApiVersion("1.0")]
 public class AuthenticationController : ControllerBase
 {
     private readonly IConfiguration _config;
@@ -21,8 +22,10 @@ public class AuthenticationController : ControllerBase
     public record AuthenticationData(string? UserName, string? Password);
     public record UserData(int Id, string FirstName, string LastName, string UserName);
 
+
     [HttpPost("token")]
     [AllowAnonymous]
+    //[MapToApiVersion("1.0")]
     public ActionResult<string> Authenticate([FromBody] AuthenticationData data)
     {
         var user = ValidateCredentials(data);

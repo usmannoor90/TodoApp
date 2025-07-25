@@ -1,43 +1,26 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using TodoLibrary.DataAccess;
+using TodoApi.StartUpConfig;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.AddServices();
 
-builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
-builder.Services.AddSingleton<ITodoData, TodoData>();
-
-builder.Services.AddAuthorization(opt =>
+builder.Services.AddApiVersioning(opts =>
 {
-    opt.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    opts.AssumeDefaultVersionWhenUnspecified = true;
+    opts.DefaultApiVersion = new(1, 0);
+    opts.ReportApiVersions = true;
+
+
 });
 
-builder.Services.AddHealthChecks().AddSqlServer(builder.Configuration.GetConnectionString("Default"));
-
-builder.Services.AddAuthentication("Bearer").AddJwtBearer(opt =>
+builder.Services.AddVersionedApiExplorer(opt =>
 {
-    opt.TokenValidationParameters = new()
-    {
-        // parametes that needs to be there for authentication
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateIssuerSigningKey = true,
-
-        //where you get the parametes to match for authentication 
-        ValidIssuer = builder.Configuration.GetValue<string>("Authentication:Issuer"),
-        ValidAudience = builder.Configuration.GetValue<string>("Authentication:Audience"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Authentication:SecretKey")!))
-    };
+    opt.GroupNameFormat = "'v'VVV";
+    opt.SubstituteApiVersionInUrl = true;
 });
-
 
 var app = builder.Build();
 
@@ -45,7 +28,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(opt =>
+    {
+        opt.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        opt.SwaggerEndpoint("/swagger/v2/swagger.json", "v2");
+        opt.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();

@@ -9,8 +9,9 @@ using TodoLibrary.Models;
 namespace TodoApi.Controllers;
 
 [Authorize]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
+[ApiVersion("1.0")]
 public class TodosController : ControllerBase
 {
     private readonly ITodoData _data;
