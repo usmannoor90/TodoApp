@@ -2,7 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using TodoLibrary.DataAccess;
 
 namespace TodoApi.StartUpConfig;
 
@@ -53,8 +52,7 @@ public static class DependencyInjectionExtensions
 
         builder.AddSwaggerServices();
 
-        builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
-        builder.Services.AddSingleton<ITodoData, TodoData>();
+
 
         builder.Services.AddAuthorization(opt =>
         {

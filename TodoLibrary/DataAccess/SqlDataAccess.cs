@@ -13,15 +13,15 @@ public class SqlDataAccess : ISqlDataAccess
     private readonly IConfiguration _config;
     private readonly AppDbContext _context;
 
-    //public DbSet<Product> Products { get; set; } = null!;
-    public SqlDataAccess(IConfiguration config, AppDbContext _context)
+    public SqlDataAccess(IConfiguration config, AppDbContext context)
     {
         _config = config;
-        _context = _context;
+        _context = context;
     }
 
     public async Task<List<T>> EFLoadData<T>(string storedProcedure, object[] sqlParams) where T : class
     {
+
         return await _context.Set<T>().FromSqlRaw(storedProcedure, sqlParams).ToListAsync();
     }
 
