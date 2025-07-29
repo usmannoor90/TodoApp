@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using TodoApi.StartUpConfig;
+using TodoLibrary.DataAccess;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.AddServices();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("EFConnection"));
+});
 
 builder.Services.AddApiVersioning(opts =>
 {
